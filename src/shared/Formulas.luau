@@ -62,7 +62,7 @@ function Formulas.rep(stationType: string, tier: number, quality: number, combo:
 
 	local statGain = def.Gain * t.StatMult * q * comboMult * m.Gear * m.Companion * m.Boost * rebirth * m.Party
 	local xp = 5 * t.XPMult * q * (1 + Formulas.comboBonus(combo) * 0.5) * m.XPBoost * m.Party
-	local cash = 2 * t.CashMult * q * m.CashBoost * (if m.DoubleCash then 2 else 1) * (1 + 0.25 * m.Rebirths)
+	local cash = 3 * t.CashMult * q * m.CashBoost * (if m.DoubleCash then 2 else 1) * (1 + 0.25 * m.Rebirths)
 
 	local energy: number
 	if def.Restores then

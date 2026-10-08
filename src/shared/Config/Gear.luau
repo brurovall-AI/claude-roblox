@@ -34,7 +34,7 @@ Gear.SlotInfo = {
 }
 
 local TIER_MULT = { 1.15, 1.35, 1.65, 2.0, 2.5, 3.2 }
-local TIER_PRICE = { 250, 2000, 15000, 120000, 900000, 6000000 }
+local TIER_PRICE = { 250, 1500, 9000, 50000, 250000, 1200000 }
 local TIER_LEVEL = { 1, 4, 10, 20, 32, 50 }
 local TIER_PREFIX = { "Starter", "Club", "Pro", "Elite", "Legend", "Apex" }
 local TIER_STYLE = {

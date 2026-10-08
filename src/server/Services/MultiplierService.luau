@@ -39,6 +39,12 @@ function MultiplierService.setSocial(player: Player, partyNearby: number, friend
 	social[player] = { party = partyNearby, friends = friendsNearby }
 end
 
+-- Number of party members currently nearby (for "PartyRep" mission events).
+function MultiplierService.partyNearby(player: Player): number
+	local s = social[player]
+	return if s then s.party else 0
+end
+
 function MultiplierService.setFlag(player: Player, flag: string, value: boolean)
 	local f = flags[player]
 	if not f then

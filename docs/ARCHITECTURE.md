@@ -182,3 +182,34 @@ Each parallel slice owns specific files (listed in its brief). Do not edit files
 own. Foundation files (section 4, plus src/map/{Kit,Palette,Layout,Gameplay,Context,init}.luau,
 Equipment/init.luau, Equipment/Style.luau, Props/init.luau) are read-only for slices.
 If a foundation change is truly required, write it down in your final report instead.
+
+## 8. Cross-slice APIs (implement exactly; other slices code against these)
+
+| Provider (slice) | API | Used by |
+|---|---|---|
+| Training | `src/client/Training/Minigame.luau`: `Minigame.run(kind: string, params: {[string]: number}, parent: GuiObject, onRep: (quality: number) -> ()) -> { stop: () -> () }` — renders the minigame UI inside `parent` and calls `onRep` with 0..3 for every graded rep/stroke. `params` come from `Config/Minigames.params(kind, difficulty)`. | Competitive (Max Lift, Endurance Hold, duels) |
+| Training | Character attributes the AnimationController animates for ANY character (players and NPCs): `TrainingPose` (Pose id or "ArmWrestle"), `TrainingStation` (StationId), `RepCount` (int, +1 per rep), `Cadence` (0..1), `DuelLean` (-1..1, ArmWrestle only), `Emote` (emote id) + `EmoteStamp` (number, changes each play) | Competitive (duels), World (NPCs) |
+| Training | `TrainingService.isTraining(player)`, `TrainingService.stop(player, reason)` | Competitive, World |
+| World | `AreaService.canAccess(player, areaId) -> (boolean, string?)`; Player attribute `Unlocked` (csv of accessible area ids), `Area` (current area id) | Training, Economy, Goals |
+| World | `NPCService.evict(stationModel)` — frees a station an ambient NPC occupies. Stations with attribute `InUse` < 0 are held by NPCs and count as FREE for players. `InUse` = UserId while a player trains. | Training |
+| World | `ElevatorService`, `Elevator.Go` request `{ Floor }` | — |
+| Economy | `Shop.Buy { Category, Id, Count? }`, `Shop.UnlockVIP`, `Inventory.Equip { Category, Id, Slot? }`, `Inventory.Unequip { Category, Id?, Slot? }`, `Boost.Use { Id }`; Player attribute `VIP` (bool). Categories: Gear, Companion, Aura, Title, Emote, Decor, Boost | Goals (tutorial), Social |
+| Economy | `src/server/Visuals/GearVisuals.apply(character, equipped)` | CharacterService, World (NPCs) |
+| Goals | `Missions.Claim { Kind = "Daily"|"Weekly", Index }`, `Missions.ClaimWeeklyBonus`, `Daily.Claim`, `Tutorial.Complete`; listens to Events incl. `StationUsed` (meta.StationType) | — |
+| Competitive | `Duel.Challenge { TargetUserId }`, `Duel.Respond { FromUserId, Accept }`, `Competition.Join`, `Tournament.Join`, `Leaderboards.Get { Board }` | Social (challenge button) |
+| Social | `Party.Invite { TargetUserId }`, `Party.Respond { FromUserId, Accept }`, `Party.Leave`; Player attribute `PartyId`; calls `MultiplierService.setSocial` every ~2s | Training (PartyRep via `MultiplierService.partyNearby`) |
+
+Server events every slice should fire/consume via `Core/Events` (see file header), plus:
+`StationUsed` (Training, meta `{ StationType }`), `CourseFinish` (Competitive), `AreaVisited` (World).
+
+## 9. Map construction notes
+
+* Free-standing structural columns exist ONLY at: Main Hall `X = ±30, Z = 30 and 70`;
+  Foundry `X = -105, Z = -50, 0, 50`; Arena none; Lobby atrium none. Columns are 2.4 x 2.4.
+  Dressing keeps 3 studs clear of them. Everything else is wall-bound.
+* `Equipment.decor(parent, kind, tier, cf, {Length?})` builds non-station equipment
+  (DumbbellRack, PlateTree, BarbellRack, KettlebellRack, MedBallRack, BenchFlat, Rig, PlyoBoxSet);
+  `Equipment.duelTable(parent, cf, tableId, tier?)` builds an arm-wrestling table (DuelTable contract).
+* Showroom scripts: `tools/bake/loader.luau` loads src/map modules under Lune and
+  `loader.dump(instance, "build/x/dump.json")` writes a renderable dump — use it to preview
+  a single library item or area in isolation (see `tools/bake/showroom.luau` once it exists).

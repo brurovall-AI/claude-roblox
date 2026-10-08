@@ -111,6 +111,53 @@ end
 local counter = 0
 
 ---------------------------------------------------------------------------
+-- Decor equipment (NOT trainable stations): storage racks, loose benches,
+-- functional rigs, duel tables. Same builder signature, no Station tag.
+-- Kinds: "DumbbellRack" (cf at floor, rack runs along cf.RightVector, length via opts.Length),
+--        "PlateTree", "BarbellRack", "KettlebellRack", "MedBallRack", "BenchFlat",
+--        "Rig" (functional training rig frame, opts.Length), "PlyoBoxSet", "DuelTable"
+---------------------------------------------------------------------------
+export type DecorOpts = { Length: number?, Name: string? }
+export type DecorBuilder = (model: Model, tier: number, cf: CFrame, style: Style.TierStyle, opts: DecorOpts) -> ()
+
+local DECOR_REG: { [string]: DecorBuilder } = {}
+
+function Equipment.registerDecor(kind: string, builder: DecorBuilder)
+	DECOR_REG[kind] = builder
+end
+
+function Equipment.decor(parent: Instance, kind: string, tier: number, cf: CFrame, opts: DecorOpts?): Model
+	local o: DecorOpts = opts or {}
+	local model = Kit.model(parent, o.Name or `{kind}_T{tier}`, cf)
+	local builder = DECOR_REG[kind]
+	local style = Style.get(tier)
+	if builder then
+		builder(model, tier, cf, style, o)
+	else
+		local len = o.Length or 6
+		Kit.box(model, cf * CFrame.new(0, 1.5, 0), Vector3.new(len, 3, 2), style.Frame, Kit.SOLID)
+	end
+	return model
+end
+
+--[[
+	Arm-wrestling table (DuelTable contract). cf: floor centre, the table's long
+	axis along cf.LookVector; players stand at either end facing each other.
+	Visuals come from the "DuelTable" decor builder; markers are added here.
+]]
+function Equipment.duelTable(parent: Instance, cf: CFrame, tableId: string, tier: number?): Model
+	local model = Equipment.decor(parent, "DuelTable", tier or 4, cf, { Name = "DuelTable_" .. tableId })
+	model:SetAttribute("TableId", tableId)
+	model:AddTag("DuelTable")
+	model.ModelStreamingMode = Enum.ModelStreamingMode.Atomic
+	-- table top ~3.2 high; competitors stand 2.6 from centre facing each other
+	Kit.marker(model, "SeatA", cf * CFrame.new(0, 3, -2.6) * CFrame.Angles(0, math.rad(180), 0))
+	Kit.marker(model, "SeatB", cf * CFrame.new(0, 3, 2.6))
+	Kit.marker(model, "Grip", cf * CFrame.new(0, 3.9, 0))
+	return model
+end
+
+---------------------------------------------------------------------------
 -- Contract helpers for builders
 ---------------------------------------------------------------------------
 -- Marks where the trainee's HumanoidRootPart goes while training.

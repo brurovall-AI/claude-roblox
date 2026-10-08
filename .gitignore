@@ -1,0 +1,7 @@
+# tooling caches
+tools/check/node_modules/
+tools/render/target/
+build/
+*.rbxl.lock
+*.rbxlx.lock
+.DS_Store

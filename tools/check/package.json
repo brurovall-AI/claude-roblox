@@ -1,0 +1,12 @@
+{
+  "name": "ironhaven-luau-check",
+  "private": true,
+  "type": "module",
+  "description": "Strict Luau type-check + lint for the Rojo source tree using the Luau analyzer compiled to WASM.",
+  "scripts": {
+    "check": "node check.mjs"
+  },
+  "dependencies": {
+    "@luau-rs/luau": "0.739.0"
+  }
+}

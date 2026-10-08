@@ -1,0 +1,120 @@
+{
+  "name": "Ironhaven",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "Shared": {
+        "$path": "src/shared"
+      }
+    },
+
+    "ServerScriptService": {
+      "Server": {
+        "$path": "src/server"
+      }
+    },
+
+    "StarterPlayer": {
+      "$properties": {
+        "CharacterWalkSpeed": 16,
+        "CharacterUseJumpPower": false,
+        "CharacterJumpHeight": 7.2,
+        "CameraMaxZoomDistance": 42,
+        "CameraMinZoomDistance": 4,
+        "EnableMouseLockOption": true
+      },
+      "StarterPlayerScripts": {
+        "Client": {
+          "$path": "src/client"
+        }
+      }
+    },
+
+    "Workspace": {
+      "$ignoreUnknownInstances": true,
+      "$properties": {
+        "StreamingEnabled": true,
+        "StreamingMinRadius": 96,
+        "StreamingTargetRadius": 420,
+        "Gravity": 196.2
+      },
+      "Map": {
+        "$path": "assets/Map.rbxm"
+      }
+    },
+
+    "Lighting": {
+      "$ignoreUnknownInstances": true,
+      "$properties": {
+        "Technology": "Future",
+        "Brightness": 2.4,
+        "ClockTime": 15.4,
+        "GeographicLatitude": 38,
+        "Ambient": [0.2, 0.2, 0.22],
+        "OutdoorAmbient": [0.5, 0.49, 0.47],
+        "ColorShift_Top": [0.08, 0.06, 0.03],
+        "ColorShift_Bottom": [0, 0, 0],
+        "EnvironmentDiffuseScale": 1,
+        "EnvironmentSpecularScale": 1,
+        "ShadowSoftness": 0.18,
+        "GlobalShadows": true,
+        "ExposureCompensation": 0.05
+      },
+      "Atmosphere": {
+        "$className": "Atmosphere",
+        "$properties": {
+          "Density": 0.3,
+          "Offset": 0.12,
+          "Color": [0.78, 0.76, 0.72],
+          "Decay": [0.42, 0.4, 0.38],
+          "Glare": 0.15,
+          "Haze": 1.4
+        }
+      },
+      "Sky": {
+        "$className": "Sky",
+        "$properties": {
+          "SunAngularSize": 11,
+          "MoonAngularSize": 9,
+          "StarCount": 1500,
+          "CelestialBodiesShown": true
+        }
+      },
+      "Bloom": {
+        "$className": "BloomEffect",
+        "$properties": {
+          "Intensity": 0.32,
+          "Size": 20,
+          "Threshold": 1.8
+        }
+      },
+      "Grade": {
+        "$className": "ColorCorrectionEffect",
+        "$properties": {
+          "Brightness": 0.01,
+          "Contrast": 0.07,
+          "Saturation": 0.06,
+          "TintColor": [1, 0.985, 0.96]
+        }
+      },
+      "SunRays": {
+        "$className": "SunRaysEffect",
+        "$properties": {
+          "Intensity": 0.035,
+          "Spread": 0.55
+        }
+      }
+    },
+
+    "SoundService": {
+      "$ignoreUnknownInstances": true,
+      "$properties": {
+        "AmbientReverb": "NoReverb",
+        "RespectFilteringEnabled": true,
+        "DistanceFactor": 3.33,
+        "RolloffScale": 1
+      }
+    }
+  }
+}

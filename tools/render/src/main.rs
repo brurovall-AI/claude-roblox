@@ -635,7 +635,7 @@ fn main() {
                         let v = (py as f32 + (sy as f32 + 0.5) / ss as f32) / h as f32;
                         let c = if cam.mode == "ortho" {
                             let x = cam.center[0] + (u - 0.5) * cam.extent[0];
-                            let z = cam.center[1] + (v - 0.5) * cam.extent[1];
+                            let z = cam.center[1] - (v - 0.5) * cam.extent[1];
                             let o = V3::new(x, cam.clip, z);
                             let mut c = scene.shade(o, V3::new(0.0, -1.0, 0.0001), 0, Some(cam.clip), &mut rng);
                             // 20-stud grid for scale

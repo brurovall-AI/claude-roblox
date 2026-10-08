@@ -6,7 +6,9 @@
 	  assets/Map.rbxm            the Map model, referenced by default.project.json
 	  build/preview/dump.json    part + light dump for tools/render (preview images)
 
-	Usage: lune run tools/bake/bake.luau [--no-dump]
+	Usage: lune run tools/bake/bake.luau [--no-dump] [--no-rbxm] [--out <dir>]
+	  --out <dir>   write the preview dump to <dir>/dump.json (default build/preview)
+	  --no-rbxm     don't write assets/Map.rbxm (use while iterating in parallel)
 ]]
 
 local fs = require("@lune/fs")
@@ -216,14 +218,30 @@ if unanchored > 0 then
 	print(string.format("[bake] WARNING: %d unanchored parts", unanchored))
 end
 
-fs.writeDir(ROOT .. "/assets")
-fs.writeFile(ROOT .. "/assets/Map.rbxm", roblox.serializeModel({ map }))
-print("[bake] wrote assets/Map.rbxm (" .. math.floor(#fs.readFile(ROOT .. "/assets/Map.rbxm") / 1024) .. " KB)")
+if not table.find(process.args, "--no-rbxm") then
+	fs.writeDir(ROOT .. "/assets")
+	fs.writeFile(ROOT .. "/assets/Map.rbxm", roblox.serializeModel({ map }))
+	print("[bake] wrote assets/Map.rbxm (" .. math.floor(#fs.readFile(ROOT .. "/assets/Map.rbxm") / 1024) .. " KB)")
+end
+
+local outDir = ROOT .. "/build/preview"
+local outIdx = table.find(process.args, "--out")
+if outIdx and process.args[outIdx + 1] then
+	local o = process.args[outIdx + 1]
+	outDir = if string.sub(o, 1, 1) == "/" then o else ROOT .. "/" .. o
+end
 
 if not table.find(process.args, "--no-dump") then
-	fs.writeDir(ROOT .. "/build/preview")
+	-- empty Lua tables encode as JSON objects; keep both lists as arrays
+	if #dumpLights == 0 then
+		table.insert(dumpLights, { p = { 0, -10000, 0 }, c = { 0, 0, 0 }, b = 0, r = 0.1, k = "PointLight" })
+	end
+	if #dumpParts == 0 then
+		table.insert(dumpParts, { s = 0, cf = { 0, -10000, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1 }, sz = { 1, 1, 1 }, c = { 0, 0, 0 }, t = 0, m = "Plastic", rf = 0 })
+	end
+	fs.writeDir(outDir)
 	fs.writeFile(
-		ROOT .. "/build/preview/dump.json",
+		outDir .. "/dump.json",
 		serde.encode("json", {
 			parts = dumpParts,
 			lights = dumpLights,
@@ -236,5 +254,5 @@ if not table.find(process.args, "--no-dump") then
 			},
 		})
 	)
-	print("[bake] wrote build/preview/dump.json")
+	print("[bake] wrote " .. outDir .. "/dump.json")
 end

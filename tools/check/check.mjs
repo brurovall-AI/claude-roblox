@@ -70,7 +70,8 @@ function walkMap(dir) {
     const full = path.join(dir, ent.name);
     if (ent.isDirectory()) walkMap(full);
     else if (ent.name.endsWith('.luau')) {
-      const rel = path.relative(root, full).replace(/\\/g, '/').replace(/\.luau$/, '');
+      let rel = path.relative(root, full).replace(/\\/g, '/').replace(/\.luau$/, '');
+      if (rel.endsWith('/init')) rel = rel.slice(0, -5); // folder module
       files.push({ file: full, instPath: ['@map', ...rel.split('/')], kind: 'module', env: 'map' });
     }
   }
@@ -201,6 +202,8 @@ function rewrite(f, src) {
       line = line.slice(0, idx) + repl + line.slice(close + 1);
       idx += repl.length;
     }
+    // Roblox type syntax `Enum.Material` -> definition name `EnumMaterial` (type positions only)
+    line = line.replace(/((?:[:|&<(,]|->|::)\s*)Enum\.(\w+)(?![\w.:(])/g, (m0, pre, name) => `${pre}Enum${name}`);
     // luau-lsp style magic: typed Instance.new / GetService
     line = line.replace(/Instance\.new\("(\w+)"\)/g, (m0, cls) => (declaredClasses.has(cls) ? `(${m0} :: ${cls})` : m0));
     line = line.replace(/game:GetService\("(\w+)"\)/g, (m0, cls) => (declaredClasses.has(cls) ? `(${m0} :: ${cls})` : m0));

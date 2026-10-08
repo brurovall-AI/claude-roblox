@@ -70,7 +70,7 @@ def({ Id = "CableCrossover", Name = "Cable Crossover", Stat = "Strength", Miniga
 def({ Id = "LatPulldown", Name = "Lat Pulldown", Stat = "Strength", Minigame = "Timing", Pose = "Pulldown", Verb = "Pull", Continuous = false, Restores = false, Gain = 1.1, EnergyCost = 2.2, Sound = "Stack", Tiers = { 2, 3, 4 } })
 def({ Id = "PullUpBar", Name = "Pull-Up Bar", Stat = "Strength", Minigame = "Timing", Pose = "Hang", Verb = "Pull-up", Continuous = false, Restores = false, Gain = 1.2, EnergyCost = 2.6, Sound = "Grip", Tiers = { 2, 3, 5 } })
 def({ Id = "TireFlip", Name = "Tire Flip", Stat = "Strength", Minigame = "Charge", Pose = "TireFlip", Verb = "Flip", Continuous = false, Restores = false, Gain = 1.6, EnergyCost = 3.5, Sound = "Thud", Tiers = { 3, 5 } })
-def({ Id = "LogPress", Name = "Log Press", Stat = "Strength", Minigame = "Timing", Pose = "StandPress", Verb = "Press", Held = "Log", Continuous = false, Restores = false, Gain = 1.5, EnergyCost = 3.2, Sound = "Thud", Tiers = { 3 } })
+def({ Id = "LogPress", Name = "Log Press", Stat = "Strength", Minigame = "Timing", Pose = "StandPress", Verb = "Press", Continuous = false, Restores = false, Gain = 1.5, EnergyCost = 3.2, Sound = "Thud", Tiers = { 3 } })
 def({ Id = "AtlasStone", Name = "Atlas Stone", Stat = "Strength", Minigame = "Charge", Pose = "Deadlift", Verb = "Load", Continuous = false, Restores = false, Gain = 1.7, EnergyCost = 3.6, Sound = "Thud", Tiers = { 3 } })
 def({ Id = "GravPress", Name = "Grav-Press", Stat = "Strength", Minigame = "Timing", Pose = "StandPress", Verb = "Press", Continuous = false, Restores = false, Gain = 1.6, EnergyCost = 2.5, Sound = "Tech", Tiers = { 6 } })
 

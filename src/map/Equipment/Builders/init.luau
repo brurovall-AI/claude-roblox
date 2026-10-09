@@ -6,6 +6,17 @@
 		return function(Equipment)
 			Equipment.register("BenchPress", function(model, tier, cf, style) ... end)
 		end
+
+	Shared.luau holds the tier-aware building blocks (tubes, pads, plates, bars,
+	stacks, plinths); Racks.luau the storage racks used by stations and decor.
 ]]
 
-return {} :: { (any) -> () }
+return {
+	require("./Strength"),
+	require("./Machines"),
+	require("./Cardio"),
+	require("./Agility"),
+	require("./Recovery"),
+	require("./Ultimate"),
+	require("./Decor"),
+} :: { (any) -> () }

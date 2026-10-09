@@ -11,4 +11,13 @@
 	(see Props/init.luau `call(...)`): (parent, cf, ...extra).
 ]]
 
-return {} :: { (any) -> () }
+return {
+	require("./Nature"),
+	require("./Furniture"),
+	require("./Fixtures"),
+	require("./Clutter"),
+	require("./Signage"),
+	require("./Lighting"),
+	require("./Services"),
+	require("./Outdoor"),
+} :: { (any) -> () }

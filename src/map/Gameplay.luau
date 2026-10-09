@@ -57,7 +57,7 @@ function Gameplay.gate(parent: Instance, door: Layout.Door, floorY: number, area
 			base * CFrame.new(side * (leafW / 2), (h - 1.2) / 2, 0),
 			Vector3.new(leafW, h - 1.3, 0.25),
 			"GlassFrosted",
-			{ Collide = true, Shadow = false }
+			{ Collide = false, Shadow = false, Transparency = 0.85 }
 		)
 		leaf.Name = "Door" .. i
 		leaf:SetAttribute("SlideX", side * (leafW - 0.3))
@@ -67,7 +67,7 @@ function Gameplay.gate(parent: Instance, door: Layout.Door, floorY: number, area
 
 	-- invisible barrier so you can't squeeze past while locked
 	local barrier = Kit.marker(model, "Barrier", base * CFrame.new(0, h / 2, 0), Vector3.new(w, h, 1))
-	barrier.CanCollide = true
+	barrier.CanCollide = false -- open until the gate system (AreaService/GateController) is added
 
 	-- requirement sign on both sides of the header
 	local sign = Kit.box(model, base * CFrame.new(0, h + 0.9, 0), Vector3.new(math.min(w, 12), 1.6, 0.3), "Ink", Kit.DETAIL)

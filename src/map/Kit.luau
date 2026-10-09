@@ -425,7 +425,7 @@ function Kit.prompt(part: BasePart, action: string, object: string, o: PromptOpt
 	pp.KeyboardKeyCode = opts.Key or Enum.KeyCode.E
 	pp.GamepadKeyCode = Enum.KeyCode.ButtonX
 	pp.RequiresLineOfSight = opts.RequiresLineOfSight == true
-	pp.Style = Enum.ProximityPromptStyle.Custom
+	pp.Style = Enum.ProximityPromptStyle.Default
 	pp.Exclusivity = opts.Exclusivity or Enum.ProximityPromptExclusivity.OneGlobally
 	pp.UIOffset = opts.Offset or Vector2.new(0, 0)
 	pp.Parent = part
